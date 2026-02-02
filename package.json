@@ -9,21 +9,23 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~52.0.25",
-    "expo-asset": "~11.0.5",
-    "expo-av": "~15.0.2",
-    "expo-dev-client": "~5.0.10",
-    "expo-file-system": "~18.0.7",
-    "expo-status-bar": "~2.0.1",
-    "react": "18.3.1",
-    "react-native": "0.76.6",
-    "whisper.rn": "^0.5.4"
+    "expo": "^54.0.33",
+    "expo-asset": "~12.0.12",
+    "expo-av": "~16.0.8",
+    "expo-dev-client": "~6.0.20",
+    "expo-file-system": "~19.0.21",
+    "expo-status-bar": "~3.0.9",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-native": "^0.81.5",
+    "whisper.rn": "^0.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native/typescript-config": "^0.83.1",
-    "@types/jest": "^30.0.0",
-    "@types/react": "^18.3.27",
+    "@types/jest": "^29.5.14",
+    "@types/react": "~19.1.10",
+    "@types/react-native": "^0.73.0",
     "@types/react-test-renderer": "^19.1.0",
     "typescript": "^5.9.3"
   },

@@ -5,24 +5,14 @@
  */
 
 import * as FileSystem from "expo-file-system";
-import { initWhisper } from "whisper.rn";
-
-export interface WhisperContext {
-  transcribe: (
-    audioUri: string,
-    options?: { language?: string; maxLen?: number },
-  ) => Promise<{ result: string }>;
-  [key: string]: any;
-}
-
-const { documentDirectory, getInfoAsync, downloadAsync } = FileSystem;
+import { initWhisper, WhisperContext } from "whisper.rn/index.js";
 
 // URL diretto al modello quantizzato (Tiny) su HuggingFace.
 const MODEL_URL =
-  "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin";
+  "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin";
 
 // Nome del file con cui il modello verrà salvato nella cache del dispositivo.
-const MODEL_FILENAME = "ggml-tiny.bin";
+const MODEL_FILENAME = "ggml-base.bin";
 
 /**
  * Controlla se il trascrittore è presente nel dispositivo. Se assente, lo scarica.
@@ -81,15 +71,19 @@ export const transcribeAudio = async (
 
   try {
     // TODO audio presente ma testo non convertito
-    const response = await whisperContext.transcribe(audioUri, {
-      language: "it",
-      maxLen: 1,
-    });
+    const sampleFilePath = "file://.../sample.wav";
+    const options = { language: "en" };
+    const { stop, promise } = whisperContext.transcribe(
+      sampleFilePath,
+      options,
+    );
+
+    const { result } = await promise;
 
     // DEBUG: Serve per controllare cosa restituisce esattamente
-    console.log("[WhisperService] Risultato Grezzo:", JSON.stringify(response));
+    console.log("[WhisperService] Risultato Grezzo:", result);
 
-    const text = response?.result?.trim();
+    const text = result?.trim();
 
     if (!text || text.length === 0) {
       console.log("[WhisperService] Attenzione: Testo vuoto rilevato");

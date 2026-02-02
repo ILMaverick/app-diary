@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { Alert, Platform } from "react-native";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
-import {
-  setupWhisperModel,
-  transcribeAudio,
-  WhisperContext,
-} from "../services/whisperService";
+import { setupWhisperModel, transcribeAudio } from "../services/whisperService";
+import { WhisperContext } from "whisper.rn/index.js";
 
 //Custom Hook (Controller) che contiene tutta la logica di Trascrizione Audio -> Testo.
 
@@ -17,7 +14,9 @@ export function useVoiceTranscriptionService() {
   );
 
   //Gestione della registrazione audio attiva
-  const [recording, setRecording] = useState<Audio.Recording | undefined>(null);
+  const [recording, setRecording] = useState<Audio.Recording | undefined>(
+    undefined,
+  );
 
   //Risultato testuale della trascrizione */
   const [transcription, setTranscription] = useState<string>("");
@@ -128,7 +127,7 @@ export function useVoiceTranscriptionService() {
    * Funzione di salvataggio pubblico
    *  @async
    */
-  async function saveToDownloads(privateUri: string) {
+  /* async function saveToDownloads(privateUri: string) {
     //Funziona solo su Android
     if (Platform.OS !== "android") return;
 
@@ -175,7 +174,7 @@ export function useVoiceTranscriptionService() {
         "Impossibile salvare il file nella cartella desiderata.",
       );
     }
-  }
+  } */
 
   /**
    * Ferma la registrazione, salva il file temporaneo
@@ -205,7 +204,7 @@ export function useVoiceTranscriptionService() {
         setTranscription(text);
 
         //Salvataggio Pubblico
-        await saveToDownloads(uri);
+        // await saveToDownloads(uri);
 
         setStatus("Fatto. Premi Registra per una nuova nota.");
       } else {
