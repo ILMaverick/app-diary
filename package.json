@@ -9,12 +9,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@fugood/react-native-audio-pcm-stream": "^1.1.4",
+    "eslint-config-expo": "~10.0.0",
     "expo": "^54.0.33",
     "expo-asset": "~12.0.12",
-    "expo-av": "~16.0.8",
+    "expo-audio": "~1.1.1",
+    "expo-build-properties": "~1.0.10",
     "expo-dev-client": "~6.0.20",
+    "expo-document-picker": "~14.0.8",
     "expo-file-system": "~19.0.21",
     "expo-status-bar": "~3.0.9",
+    "expo-system-ui": "~6.0.9",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "^0.81.5",
@@ -27,6 +32,10 @@
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0",
     "@types/react-test-renderer": "^19.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   },
   "private": true

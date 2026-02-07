@@ -1,12 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
-import { useVoiceTranscriptionService } from "../hooks/voiceTranscriptionService";
+import { StyleSheet, Text, View, Button, ActivityIndicator, ScrollView } from 'react-native';
+import { useVoiceTranscriptionService } from '../hooks/useVoiceTranscriptionService';
 
 /**
  * Componente di visualizzazione della schermata principale (View).
@@ -17,7 +10,7 @@ import { useVoiceTranscriptionService } from "../hooks/voiceTranscriptionService
 // TODO descrizione da modificare quando ci saranno più schermate
 
 export default function HomeScreen() {
-  const { recording, transcription, status, isLoading, handlePress } =
+  const { isRecording, status, isLoading, realtimeResult, realtimeFinalResult, handlePress } =
     useVoiceTranscriptionService();
 
   return (
@@ -28,27 +21,28 @@ export default function HomeScreen() {
         <Text style={styles.statusLabel}>{status}</Text>
 
         {isLoading && (
-          <ActivityIndicator
-            size="large"
-            color="#0000ff"
-            style={{ marginVertical: 10 }}
-          />
+          <ActivityIndicator size="large" color="#0000ff" style={{ marginVertical: 10 }} />
         )}
 
         <View style={styles.btnContainer}>
           <Button
-            title={recording ? "STOP & TRASCRIVI" : "REGISTRA DIARIO"}
+            title={isRecording ? 'STOP & TRASCRIVI' : 'REGISTRA UNA NOTA'}
             onPress={handlePress}
-            // Togliamo il "disabled" così puoi cliccare e ricevere l'alert se qualcosa non va
-            disabled={isLoading && !recording}
-            color={recording ? "#d32f2f" : "#1976D2"}
+            disabled={isLoading && !isRecording}
+            color={isRecording ? '#d32f2f' : '#1976D2'}
           />
         </View>
       </View>
 
       <ScrollView style={styles.outputBox}>
         <Text style={styles.label}>Testo Rilevato:</Text>
-        <Text style={styles.text}>{transcription || "..."}</Text>
+        <Text style={styles.text}>
+          {!isRecording && realtimeFinalResult === null
+            ? '...'
+            : realtimeFinalResult !== null
+              ? realtimeFinalResult
+              : realtimeResult}
+        </Text>
       </ScrollView>
     </View>
   );
@@ -57,23 +51,23 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
     padding: 20,
     paddingTop: 60,
   },
   header: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: "center",
-    color: "#333",
+    textAlign: 'center',
+    color: '#333',
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 12,
     elevation: 4,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
     marginBottom: 20,
@@ -81,32 +75,32 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 16,
     marginBottom: 15,
-    textAlign: "center",
-    color: "#555",
-    fontStyle: "italic",
+    textAlign: 'center',
+    color: '#555',
+    fontStyle: 'italic',
   },
   statusLabel: {
     fontSize: 16,
     marginBottom: 15,
-    textAlign: "center",
-    color: "#555",
-    fontStyle: "italic",
+    textAlign: 'center',
+    color: '#555',
+    fontStyle: 'italic',
   },
   btnContainer: { marginTop: 5 },
   outputBox: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 12,
     padding: 15,
     elevation: 2,
   },
   label: {
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 10,
-    color: "#333",
-    textTransform: "uppercase",
+    color: '#333',
+    textTransform: 'uppercase',
     fontSize: 12,
     letterSpacing: 1,
   },
-  text: { fontSize: 18, lineHeight: 28, color: "#222" },
+  text: { fontSize: 18, lineHeight: 28, color: '#222' },
 });
