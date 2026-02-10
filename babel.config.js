@@ -6,5 +6,10 @@ module.exports = function (api) {
       // Reanimated deve essere SEMPRE l'ultimo della lista
       'react-native-reanimated/plugin',
     ],
+    env: {
+      production: {
+        plugins: ['transform-remove-console'],
+      },
+    },
   };
 };

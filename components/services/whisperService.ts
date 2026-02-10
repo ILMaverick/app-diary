@@ -20,8 +20,8 @@ import {
 const MODELS_DIR = 'whisper-models'; //Unica cartella per tutti i modelli
 
 const WHISPER_CONFIG = {
-  url: 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin',
-  filename: 'ggml-base.bin',
+  url: 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base-q5_1.bin',
+  filename: 'ggml-base-q5_1.bin',
 };
 
 const VAD_CONFIG = {

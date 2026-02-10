@@ -16,12 +16,13 @@ export function useVoiceTranscriptionService() {
   const [error, setError] = useState<string | null>(null);
 
   const transcriberRef = useRef<RealtimeTranscriber | null>(null);
+  const isMountedRef = useRef<boolean>(true);
 
   const { whisperContext, vadContext, initializeWhisperModel } = useWhisperModel();
 
   //Inizializzazione Modello
   useEffect(() => {
-    let isMounted = true;
+    isMountedRef.current = true;
 
     const setup = async () => {
       try {
@@ -30,12 +31,12 @@ export function useVoiceTranscriptionService() {
 
         await initializeWhisperModel();
 
-        if (isMounted) {
+        if (isMountedRef.current) {
           setStatus('Pronto per registrare.');
           setIsLoading(false);
         }
       } catch (err) {
-        if (isMounted) {
+        if (isMountedRef.current) {
           const msg = err instanceof Error ? err.message : String(err);
           setStatus('Errore caricamento.');
           setError(msg);
@@ -47,20 +48,47 @@ export function useVoiceTranscriptionService() {
 
     setup();
 
+    //Cleanup totale
     return () => {
-      isMounted = false;
-    };
-  }, [initializeWhisperModel]);
+      isMountedRef.current = false;
 
-  //Cleanup alla chiusura del componente
-  useEffect(() => {
-    return () => {
-      //Se l'utente esce dalla schermata mentre registra, viene fermata la registrazione
-      if (transcriberRef.current) {
-        console.log('Cleanup: Stopping transcriber on unmount');
-        transcriberRef.current.stop();
-      }
+      const cleanup = async () => {
+        //Ferma la trascrizione se attiva
+        if (transcriberRef.current) {
+          console.log('Pulizia: Chiusura Transcriber...');
+          try {
+            await transcriberRef.current.stop();
+          } catch (e) {
+            console.error('Errore nella chiusura del Transcriber durante la pulizia:', e);
+          }
+          transcriberRef.current = null;
+        }
+
+        //Rilascio del modello VAD
+        if (vadContext) {
+          console.log('Pulizia: rilascio del VAD Context');
+          try {
+            await vadContext.release();
+          } catch (e) {
+            console.error('Errore nel rilascio del VAD Context:', e);
+          }
+        }
+
+        //Rilascio del modello Whisper
+        if (whisperContext) {
+          console.log('Pulizia: rilascio del Whisper Context');
+          try {
+            await whisperContext.release();
+          } catch (e) {
+            console.error('Errore nel rilascio del Context:', e);
+          }
+        }
+      };
+
+      cleanup();
     };
+    // Disabilita il warning solo per questa riga
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startRealtimeTranscription = async () => {
