@@ -32,7 +32,7 @@ export default function HomeScreen() {
           {/* Loading Spinner */}
           {isLoading && <ActivityIndicator size="large" className="text-blue-600 mb-4" />}
 
-          {/* Pulsante Custom (Molto più bello del Button standard) */}
+          {/* Pulsante Custom */}
           <TouchableOpacity
             onPress={handlePress}
             disabled={isLoading && !isRecording}
@@ -49,7 +49,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Output Box (Area Scrollabile) */}
+        {/* Area Scrollabile */}
         <View className="flex-1 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 mb-4">
           <Text className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
             Anteprima Testo

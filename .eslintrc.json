@@ -6,6 +6,13 @@
     "prettier/prettier": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "no-console": "off"
+    "no-console": "off",
+    "spaced-comment": [
+      "warn",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ]
   }
 }

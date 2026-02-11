@@ -17,7 +17,7 @@ import {
   WhisperVadContext,
 } from 'whisper.rn/index.js';
 
-const MODELS_DIR = 'whisper-models'; //Unica cartella per tutti i modelli
+const MODELS_DIR = 'whisper-models'; // Unica cartella per tutti i modelli
 
 const WHISPER_CONFIG = {
   url: 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base-q5_1.bin',
@@ -56,13 +56,13 @@ const ensureFileExists = async (filename: string, url: string): Promise<string> 
   const directory = getModelsDirectory();
   const file = new File(directory, filename);
 
-  //Controllo se esiste
+  // Controllo se esiste
   if (file.exists) {
     console.log(`[WhisperService] Modello in cache: ${filename}`);
     return file.uri;
   }
 
-  //Se non esiste, lo scarico
+  // Se non esiste, lo scarico
   console.log(`[WhisperService] Inizio download: ${filename}`);
   try {
     const downloadResumable = createDownloadResumable(
@@ -89,7 +89,7 @@ const ensureFileExists = async (filename: string, url: string): Promise<string> 
     console.log(`[WhisperService] Download completato: ${filename}`);
     return result.uri;
   } catch (error) {
-    //Se il download fallisce, puliamo il file parziale/corrotto
+    // Se il download fallisce, puliamo il file parziale/corrotto
     if (file.exists) {
       file.delete();
     }
@@ -105,8 +105,8 @@ export function useWhisperModel() {
     try {
       console.log('[WhisperService] Avvio inizializzazione parallela...');
 
-      //Scarichiamo/Verifichiamo entrambi i file in PARALLELO.
-      //Promise.all aspetta che entrambi siano pronti.
+      // Scarichiamo/Verifichiamo entrambi i file in PARALLELO.
+      // Promise.all aspetta che entrambi siano pronti.
       const [whisperPath, vadPath] = await Promise.all([
         ensureFileExists(WHISPER_CONFIG.filename, WHISPER_CONFIG.url),
         ensureFileExists(VAD_CONFIG.filename, VAD_CONFIG.url),
@@ -114,12 +114,12 @@ export function useWhisperModel() {
 
       console.log('[WhisperService] File pronti. Inizializzazione motori...');
 
-      //Init Whisper
+      // Init Whisper
       const wContext = await initWhisper({ filePath: whisperPath });
       setWhisperContext(wContext);
       console.log('✅ Whisper Context Pronto');
 
-      //Init VAD
+      // Init VAD
       const vContext = await initWhisperVad({ filePath: vadPath });
       setVadContext(vContext);
       console.log('✅ VAD Context Pronto');
